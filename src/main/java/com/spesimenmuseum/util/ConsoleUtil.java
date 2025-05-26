@@ -1,6 +1,10 @@
 package com.spesimenmuseum.util;
 
+import java.util.Scanner;
+
 public class ConsoleUtil {
+    private static final Scanner scanner = new Scanner(System.in);
+
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -13,6 +17,11 @@ public class ConsoleUtil {
             Thread.currentThread().interrupt();
             System.err.println("Thread sleep dihentikan karena " + e.getMessage());
         }
+    }
+
+    public static void pressEnterToContinue() {
+        System.out.print("\nTekan Enter Untuk Kembali...");
+        scanner.nextLine();
     }
 
     public static void showErrorMessage(String message) {
