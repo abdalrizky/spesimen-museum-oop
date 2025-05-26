@@ -1,9 +1,12 @@
 package com.spesimenmuseum.util;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class ConsoleUtil {
     private static final Scanner scanner = new Scanner(System.in);
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
@@ -17,6 +20,15 @@ public class ConsoleUtil {
             Thread.currentThread().interrupt();
             System.err.println("Thread sleep dihentikan karena " + e.getMessage());
         }
+    }
+
+    public static String localDateTimeToString(LocalDateTime dateTime) {
+        if (dateTime == null) return "-";
+        return dateTime.format(dateTimeFormatter);
+    }
+
+    public static LocalDateTime getCurrentLocalDateTime() {
+        return LocalDateTime.now();
     }
 
     public static void pressEnterToContinue() {
