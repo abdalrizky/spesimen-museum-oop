@@ -15,6 +15,32 @@ public class ConsoleUtil {
         }
     }
 
+    public static void showErrorMessage(String message) {
+        redColor();
+        System.out.println("=========================================================================");
+        System.out.println("                             ERROR: " + message);
+        System.out.println("=========================================================================");
+        blueColor();
+        delay(1500);
+    }
+
+    public static void showSuccessMessage(String message) {
+        greenColor();
+        System.out.println("=========================================================================");
+        System.out.println("                             " + message);
+        System.out.println("=========================================================================");
+        blueColor();
+        delay(1000);
+    }
+
+    public static void showInfoMessage(String message) {
+        blueColor();
+        System.out.println("=========================================================================");
+        System.out.println("                             " + message);
+        System.out.println("=========================================================================");
+        delay(1000);
+    }
+
     public static void blueColor() {
         System.out.print("\033[0;34m");
     }
