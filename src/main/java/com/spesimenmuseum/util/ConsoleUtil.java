@@ -6,6 +6,15 @@ public class ConsoleUtil {
         System.out.flush();
     }
 
+    public static void delay(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Thread sleep dihentikan karena " + e.getMessage());
+        }
+    }
+
     public static void blueColor() {
         System.out.print("\033[0;34m");
     }
