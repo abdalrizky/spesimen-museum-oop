@@ -191,7 +191,7 @@ public class Main {
             int menu = ConsoleUtil.getInputInt("\nMasukkan pilihan: ");
             switch (menu) {
                 case 1: displayEmployeeData(employee); break;
-                case 2: showAllSpecimens(); break;
+                case 2: showAllSpecimens(true); break;
                 case 3: addSpecimen(); break;
                 case 4: updateSpecimen(); break;
                 case 5: deleteSpecimen(); break;
@@ -215,13 +215,15 @@ public class Main {
         ConsoleUtil.pressEnterToContinue();
     }
 
-    private static void showAllSpecimens() {
+    private static void showAllSpecimens(boolean waitForEnter) {
         ConsoleUtil.clearScreen();
         List<Specimen> specimens = specimenService.getAllSpecimens();
         ConsoleUtil.showInfoMessage("DAFTAR SPESIMEN", specimens.isEmpty() ? "DATA SPESIMEN KOSONG" : null);
 
         if (specimens.isEmpty()) {
-            ConsoleUtil.pressEnterToContinue();
+            if (waitForEnter) {
+                ConsoleUtil.pressEnterToContinue();
+            }
             return;
         }
         for (Specimen s : specimens) {
@@ -239,7 +241,9 @@ public class Main {
             System.out.println("Tanggal Pemeriksaan: " + ConsoleUtil.localDateTimeToString(s.getExaminedAt()));
             System.out.println("-------------------------------------------------------------------------");
         }
-        ConsoleUtil.pressEnterToContinue();
+        if (waitForEnter) {
+            ConsoleUtil.pressEnterToContinue();
+        }
     }
 
     private static void addSpecimen() {
@@ -260,7 +264,13 @@ public class Main {
     }
 
     private static void updateSpecimen() {
-        showAllSpecimens();
+        showAllSpecimens(false);
+
+        List<Specimen> specimens = specimenService.getAllSpecimens();
+        if (specimens.isEmpty()) {
+            return;
+        }
+
         int id = ConsoleUtil.getInputInt("Masukkan ID Spesimen yang ingin diubah (0 untuk batal): ");
         if (id == 0) return;
 
@@ -272,20 +282,28 @@ public class Main {
 
         ConsoleUtil.clearScreen();
         ConsoleUtil.showInfoMessage("UBAH SPESIMEN", "Mengubah Spesimen ID: " + s.getId() + " (" + s.getCommonName() + ")");
-        String commonName = ConsoleUtil.getInputString("Nama Spesimen Baru ("+s.getCommonName()+"): ");
-        String scientificName = ConsoleUtil.getInputString("Nama Ilmiah Baru ("+s.getScientificName()+"): ");
-        String type = ConsoleUtil.getInputString("Jenis Spesimen Baru ("+s.getType()+"): ");
-        String preservationMethod = ConsoleUtil.getInputString("Metode Pengawetan Baru ("+s.getPreservationMethod()+"): ");
-        String jumlahStr = ConsoleUtil.getInputString("Jumlah Baru ("+s.getQuantity()+"): ");
-        String description = ConsoleUtil.getInputString("Deskripsi Baru ("+s.getDescription()+"): ");
-        String condition = ConsoleUtil.getInputString("Kondisi Baru (Baik/Rusak) ("+s.getCondition()+"): ");
+        String commonName = ConsoleUtil.getInputString("Nama Spesimen Baru ("+s.getCommonName()+", kosongkan jika tidak berubah): ");
+        String scientificName = ConsoleUtil.getInputString("Nama Ilmiah Baru ("+s.getScientificName()+", kosongkan jika tidak berubah): ");
+        String type = ConsoleUtil.getInputString("Jenis Spesimen Baru ("+s.getType()+", kosongkan jika tidak berubah): ");
+        String preservationMethod = ConsoleUtil.getInputString("Metode Pengawetan Baru ("+s.getPreservationMethod()+", kosongkan jika tidak berubah): ");
+        String jumlahStr = ConsoleUtil.getInputString("Jumlah Baru ("+s.getQuantity()+", kosongkan jika tidak berubah): ");
+        String description = ConsoleUtil.getInputString("Deskripsi Baru ("+s.getDescription()+", kosongkan jika tidak berubah): ");
+        String condition = ConsoleUtil.getInputString("Kondisi Baru (Baik/Rusak) ("+s.getCondition()+", kosongkan jika tidak berubah): ");
+
+        int newQuantity;
+        try {
+            newQuantity = jumlahStr.isEmpty() ? s.getQuantity() : Integer.parseInt(jumlahStr);
+        } catch (NumberFormatException e) {
+            ConsoleUtil.showErrorMessage("Jumlah harus berupa angka.");
+            return;
+        }
 
         if (specimenService.updateSpecimen(id,
                 commonName.isEmpty() ? s.getCommonName() : commonName,
                 scientificName.isEmpty() ? s.getScientificName() : scientificName,
                 type.isEmpty() ? s.getType() : type,
                 preservationMethod.isEmpty() ? s.getPreservationMethod() : preservationMethod,
-                jumlahStr.isEmpty() ? s.getQuantity() : Integer.parseInt(jumlahStr), // Perlu error handling untuk parseInt
+                newQuantity,
                 description.isEmpty() ? s.getDescription() : description,
                 condition.isEmpty() ? s.getCondition() : condition)) {
             ConsoleUtil.showSuccessMessage("BERHASIL MENGUBAH SPESIMEN");
@@ -295,7 +313,13 @@ public class Main {
     }
 
     private static void deleteSpecimen() {
-        showAllSpecimens();
+        showAllSpecimens(false);
+
+        List<Specimen> specimens = specimenService.getAllSpecimens();
+        if (specimens.isEmpty()) {
+            return;
+        }
+
         int id = ConsoleUtil.getInputInt("Masukkan ID Spesimen yang ingin dihapus (0 untuk batal): ");
         if (id == 0) return;
 
@@ -328,7 +352,7 @@ public class Main {
 
             int menu = ConsoleUtil.getInputInt("\nMasukkan pilihan: ");
             switch (menu) {
-                case 1: showAllSpecimens(); break;
+                case 1: showAllSpecimens(true); break;
                 case 2: displayVisitorData(visitor); break;
                 case 3: updateVisitorData(visitor); break;
                 case 4:
@@ -353,13 +377,11 @@ public class Main {
     private static void updateVisitorData(Visitor visitor) {
         ConsoleUtil.clearScreen();
         ConsoleUtil.showInfoMessage("UBAH DATA DIRI PENGUNJUNG", "Data saat ini:");
-        // Tampilkan data lama dengan format yang lebih baik
         System.out.println("Nama Lengkap   : " + visitor.getFullName());
         System.out.println("Email          : " + visitor.getEmail());
         System.out.println("Nomor Telepon  : " + visitor.getPhoneNumber());
         System.out.println("Domisili       : " + visitor.getResidence());
         System.out.println("-------------------------------------------------------------------------");
-
 
         String newFullName = ConsoleUtil.getInputString("Nama Lengkap Baru (kosongkan jika tidak berubah): ");
         String newEmail = ConsoleUtil.getInputString("Email Baru (kosongkan jika tidak berubah): ");
@@ -375,7 +397,6 @@ public class Main {
             ConsoleUtil.showSuccessMessage("DATA DIRI BERHASIL DIPERBARUI");
         } else {
             ConsoleUtil.showErrorMessage("GAGAL MEMPERBARUI DATA DIRI (lihat log untuk detail).");
-            // Mungkin perlu reload data visitor dari DB jika update gagal sebagian
         }
         ConsoleUtil.pressEnterToContinue();
     }
@@ -392,7 +413,7 @@ public class Main {
 
             int menu = ConsoleUtil.getInputInt("\nMasukkan pilihan: ");
             switch (menu) {
-                case 1: showAllSpecimens(); break;
+                case 1: showAllSpecimens(true); break;
                 case 2: examineSpecimenBySpecialist(); break;
                 case 3: displaySpecialistData(specialist); break;
                 case 4:
@@ -416,7 +437,13 @@ public class Main {
     }
 
     private static void examineSpecimenBySpecialist() {
-        showAllSpecimens();
+        showAllSpecimens(false);
+
+        List<Specimen> specimens = specimenService.getAllSpecimens();
+        if (specimens.isEmpty()) {
+            return;
+        }
+
         int id = ConsoleUtil.getInputInt("Masukkan ID Spesimen yang ingin diperiksa (0 untuk batal): ");
         if (id == 0) return;
 
