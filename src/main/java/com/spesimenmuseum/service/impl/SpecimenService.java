@@ -18,8 +18,7 @@ public class SpecimenService implements ISpecimenService {
 
     @Override
     public boolean addSpecimen(String commonName, String scientificName, String type, String preservationMethod, int quantity, String description) {
-        if (commonName == null || commonName.trim().isEmpty() ||
-                scientificName == null || scientificName.trim().isEmpty()) {
+        if (commonName == null || commonName.trim().isEmpty() || scientificName == null || scientificName.trim().isEmpty()) {
             System.err.println("Nama umum dan nama ilmiah spesimen tidak boleh kosong.");
             return false;
         }

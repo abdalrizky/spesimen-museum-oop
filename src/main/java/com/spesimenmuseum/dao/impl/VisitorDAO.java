@@ -5,8 +5,6 @@ import com.spesimenmuseum.dao.IVisitorDAO;
 import com.spesimenmuseum.model.Visitor;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class VisitorDAO implements IVisitorDAO {
     @Override
@@ -75,20 +73,6 @@ public class VisitorDAO implements IVisitorDAO {
             pstmt.setInt(3, visitor.getVisitorId());
             return pstmt.executeUpdate() > 0;
         }
-    }
-
-    @Override
-    public List<Visitor> findAllSpecifics() throws SQLException {
-        List<Visitor> visitors = new ArrayList<>();
-        String sql = "SELECT id, full_name, residence FROM visitors";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                visitors.add(mapToVisitorSpecifics(rs));
-            }
-        }
-        return visitors;
     }
 
     private Visitor mapToVisitorSpecifics(ResultSet rs) throws SQLException {

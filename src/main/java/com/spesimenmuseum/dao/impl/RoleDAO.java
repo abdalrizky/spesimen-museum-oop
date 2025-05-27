@@ -8,8 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RoleDAO implements IRoleDAO {
     @Override
@@ -42,22 +40,6 @@ public class RoleDAO implements IRoleDAO {
             System.err.println("Error finding role by name: " + e.getMessage());
         }
         return null;
-    }
-
-    @Override
-    public List<Role> findAll() {
-        List<Role> roles = new ArrayList<>();
-        String sql = "SELECT * FROM roles";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                roles.add(mapToRole(rs));
-            }
-        } catch (SQLException e) {
-            System.err.println("Error finding all roles: " + e.getMessage());
-        }
-        return roles;
     }
 
     private Role mapToRole(ResultSet rs) throws SQLException {

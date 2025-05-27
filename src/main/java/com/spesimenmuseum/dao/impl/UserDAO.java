@@ -36,7 +36,7 @@ public class UserDAO implements IUserDAO {
 
             try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    return generatedKeys.getInt(1); // Mengembalikan ID yang di-generate
+                    return generatedKeys.getInt(1);
                 } else {
                     throw new SQLException("Gagal menyimpan credential user, tidak mendapatkan ID.");
                 }
@@ -57,24 +57,6 @@ public class UserDAO implements IUserDAO {
             }
         } catch (SQLException e) {
             System.err.println("Error saat mencari user berdasarkan username: " + e.getMessage());
-            // e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public User findBaseByCredentialId(int credentialId) {
-        String sql = "SELECT id, role_id, email, phone_number, username, password FROM credentials WHERE id = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, credentialId);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return mapToBaseUser(rs);
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error saat mencari user berdasarkan credential ID: " + e.getMessage());
         }
         return null;
     }
@@ -86,18 +68,7 @@ public class UserDAO implements IUserDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.getEmail());
             pstmt.setString(2, user.getPhoneNumber());
-            pstmt.setInt(3, user.getId()); // ID dari credential
-            return pstmt.executeUpdate() > 0;
-        }
-    }
-
-    @Override
-    public boolean updatePassword(int userId, String newPasswordHash) throws SQLException {
-        String sql = "UPDATE credentials SET password = ? WHERE id = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, newPasswordHash);
-            pstmt.setInt(2, userId);
+            pstmt.setInt(3, user.getId());
             return pstmt.executeUpdate() > 0;
         }
     }

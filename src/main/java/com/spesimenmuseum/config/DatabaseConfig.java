@@ -21,14 +21,4 @@ public class DatabaseConfig {
         }
         return connection;
     }
-
-    public static void closeConnection() {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                System.err.println("Gagal menutup koneksi: " + e.getMessage());
-            }
-        }
-    }
 }

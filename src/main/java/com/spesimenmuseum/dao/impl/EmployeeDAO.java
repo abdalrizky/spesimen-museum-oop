@@ -6,8 +6,6 @@ import com.spesimenmuseum.model.Employee;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EmployeeDAO implements IEmployeeDAO {
     @Override
@@ -16,7 +14,7 @@ public class EmployeeDAO implements IEmployeeDAO {
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            if (employee.getId() <= 0) { // employee.getId() adalah credential_id
+            if (employee.getId() <= 0) {
                 throw new SQLException("Credential ID tidak valid untuk menyimpan data employee.");
             }
             pstmt.setInt(1, employee.getId());
@@ -65,8 +63,6 @@ public class EmployeeDAO implements IEmployeeDAO {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     Employee emp = mapToEmployeeSpecifics(rs);
-                    // Set juga credential_id jika perlu untuk referensi, meskipun tidak bagian dari User base saat ini
-                    // emp.setId(rs.getInt("credential_id")); // Ini akan menimpa id dari User, hati-hati
                     return emp;
                 }
             }
@@ -76,7 +72,7 @@ public class EmployeeDAO implements IEmployeeDAO {
 
     @Override
     public boolean update(Employee employee) throws SQLException {
-        String sql = "UPDATE employees SET full_name = ?, position = ?, joined_at = ? WHERE id = ?"; // id di sini adalah PK tabel employees
+        String sql = "UPDATE employees SET full_name = ?, position = ?, joined_at = ? WHERE id = ?";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, employee.getFullName());
@@ -89,20 +85,6 @@ public class EmployeeDAO implements IEmployeeDAO {
             pstmt.setInt(4, employee.getEmployeeId());
             return pstmt.executeUpdate() > 0;
         }
-    }
-
-    @Override
-    public List<Employee> findAllSpecifics() throws SQLException {
-        List<Employee> employees = new ArrayList<>();
-        String sql = "SELECT id, full_name, position, joined_at FROM employees";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                employees.add(mapToEmployeeSpecifics(rs));
-            }
-        }
-        return employees;
     }
 
     private Employee mapToEmployeeSpecifics(ResultSet rs) throws SQLException {

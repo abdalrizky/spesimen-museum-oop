@@ -77,7 +77,6 @@ public class AuthService implements IAuthService {
                 return null;
             }
         }
-        System.err.println("Login Gagal: Username atau password salah untuk " + username);
         return null;
     }
 

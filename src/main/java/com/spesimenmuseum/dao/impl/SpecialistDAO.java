@@ -5,8 +5,6 @@ import com.spesimenmuseum.dao.ISpecialistDAO;
 import com.spesimenmuseum.model.Specialist;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SpecialistDAO implements ISpecialistDAO {
     @Override
@@ -15,7 +13,7 @@ public class SpecialistDAO implements ISpecialistDAO {
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            if (specialist.getId() <= 0) { // specialist.getId() adalah credential_id
+            if (specialist.getId() <= 0) {
                 throw new SQLException("Credential ID tidak valid untuk menyimpan data specialist.");
             }
             pstmt.setInt(1, specialist.getId());
@@ -68,7 +66,7 @@ public class SpecialistDAO implements ISpecialistDAO {
 
     @Override
     public boolean update(Specialist specialist) throws SQLException {
-        String sql = "UPDATE specialists SET full_name = ?, skill = ?, institution = ? WHERE id = ?"; // id adalah PK tabel specialists
+        String sql = "UPDATE specialists SET full_name = ?, skill = ?, institution = ? WHERE id = ?";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, specialist.getFullName());
@@ -77,19 +75,6 @@ public class SpecialistDAO implements ISpecialistDAO {
             pstmt.setInt(4, specialist.getSpecialistId());
             return pstmt.executeUpdate() > 0;
         }
-    }
-
-    public List<Specialist> findAllSpecifics() throws SQLException {
-        List<Specialist> specialists = new ArrayList<>();
-        String sql = "SELECT id, full_name, skill, institution FROM specialists";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                specialists.add(mapToSpecialistSpecifics(rs));
-            }
-        }
-        return specialists;
     }
 
     private Specialist mapToSpecialistSpecifics(ResultSet rs) throws SQLException {

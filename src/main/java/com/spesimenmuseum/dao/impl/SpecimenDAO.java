@@ -17,7 +17,7 @@ public class SpecimenDAO implements ISpecimenDAO {
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            mapSpecimenToStatementForInsert(specimen, pstmt); // Menggunakan helper untuk insert
+            mapSpecimenToStatementForInsert(specimen, pstmt);
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -50,7 +50,7 @@ public class SpecimenDAO implements ISpecimenDAO {
     @Override
     public List<Specimen> findAll() throws SQLException {
         List<Specimen> specimens = new ArrayList<>();
-        String sql = "SELECT * FROM specimens"; // Ambil semua kolom
+        String sql = "SELECT * FROM specimens";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
@@ -69,8 +69,8 @@ public class SpecimenDAO implements ISpecimenDAO {
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            mapSpecimenToStatementForUpdate(specimen, pstmt); // Menggunakan helper untuk update
-            pstmt.setInt(11, specimen.getId()); // Kondisi WHERE
+            mapSpecimenToStatementForUpdate(specimen, pstmt);
+            pstmt.setInt(11, specimen.getId());
             return pstmt.executeUpdate() > 0;
         }
     }
@@ -109,12 +109,12 @@ public class SpecimenDAO implements ISpecimenDAO {
         pstmt.setString(4, specimen.getPreservationMethod());
         pstmt.setInt(5, specimen.getQuantity());
         pstmt.setString(6, specimen.getDescription());
-        pstmt.setString(7, specimen.getCondition() != null ? specimen.getCondition() : "Baik"); // Default condition
-        pstmt.setString(8, specimen.getExaminationResult() != null ? specimen.getExaminationResult() : "-"); // Default result
+        pstmt.setString(7, specimen.getCondition() != null ? specimen.getCondition() : "Baik");
+        pstmt.setString(8, specimen.getExaminationResult() != null ? specimen.getExaminationResult() : "-");
         if (specimen.getEntryAt() != null) {
             pstmt.setTimestamp(9, Timestamp.valueOf(specimen.getEntryAt()));
         } else {
-            pstmt.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now())); // Default entry date
+            pstmt.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now()));
         }
         if (specimen.getExaminedAt() != null) {
             pstmt.setTimestamp(10, Timestamp.valueOf(specimen.getExaminedAt()));
