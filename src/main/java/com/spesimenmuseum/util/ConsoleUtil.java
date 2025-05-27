@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class ConsoleUtil {
     private static final Scanner scanner = new Scanner(System.in);
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final int LINE_WIDTH = 73;
 
     public static void clearScreen() {
@@ -28,15 +27,6 @@ public class ConsoleUtil {
     public static String localDateTimeToString(LocalDateTime dateTime) {
         if (dateTime == null) return "-";
         return dateTime.format(dateTimeFormatter);
-    }
-
-    public static String localDateToString(LocalDateTime dateTime) {
-        if (dateTime == null) return "-";
-        return dateTime.format(dateFormatter);
-    }
-
-    public static LocalDateTime getCurrentLocalDateTime() {
-        return LocalDateTime.now();
     }
 
     public static void pressEnterToContinue() {
