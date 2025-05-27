@@ -5,6 +5,8 @@ public class Visitor extends User {
     private String fullName;
     private String residence;
 
+    public Visitor() {}
+
     public Visitor(String username, String passwordHash, String email, String phoneNumber, Role role,
                    String fullName, String residence) {
         super(username, passwordHash, email, phoneNumber, role);

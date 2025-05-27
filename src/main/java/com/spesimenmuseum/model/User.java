@@ -8,6 +8,8 @@ public abstract class User {
     private String phoneNumber;
     private Role role;
 
+    public User() {}
+
     public User(String username, String passwordHash, String email, String phoneNumber, Role role) {
         this.username = username;
         this.passwordHash = passwordHash;

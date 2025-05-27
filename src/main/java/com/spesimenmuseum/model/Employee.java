@@ -8,6 +8,8 @@ public class Employee extends User {
     private String position;
     private LocalDateTime joinedAt;
 
+    public Employee() {}
+
     public Employee(String username, String passwordHash, String email, String phoneNumber, Role role,
                     String fullName, String position, LocalDateTime joinedAt) {
         super(username, passwordHash, email, phoneNumber, role);

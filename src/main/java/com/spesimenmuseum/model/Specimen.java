@@ -15,6 +15,8 @@ public class Specimen {
     private LocalDateTime entryAt;
     private LocalDateTime examinedAt;
 
+    public Specimen() {}
+
     public Specimen(String commonName, String scientificName, String type, String preservationMethod,
                     int quantity, String description, String condition, LocalDateTime entryAt) {
         this.commonName = commonName;

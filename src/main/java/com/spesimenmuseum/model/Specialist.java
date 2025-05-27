@@ -6,6 +6,8 @@ public class Specialist extends User {
     private String skill;
     private String institution;
 
+    public Specialist() {}
+
     public Specialist(String username, String passwordHash, String email, String phoneNumber, Role role,
                       String fullName, String skill, String institution) {
         super(username, passwordHash, email, phoneNumber, role);
