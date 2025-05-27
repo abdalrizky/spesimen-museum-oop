@@ -9,6 +9,7 @@ public class ConsoleUtil {
     private static final Scanner scanner = new Scanner(System.in);
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final int LINE_WIDTH = 73;
 
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
@@ -43,10 +44,21 @@ public class ConsoleUtil {
         scanner.nextLine();
     }
 
+    private static String centerText(String text, int width) {
+        if (text == null) text = "";
+        if (text.length() >= width) {
+            return text.substring(0, width); // Potong jika lebih panjang
+        }
+        int paddingSize = width - text.length();
+        int padStart = paddingSize / 2;
+        int padEnd = paddingSize - padStart;
+        return " ".repeat(padStart) + text + " ".repeat(padEnd);
+    }
+
     public static void showErrorMessage(String message) {
         redColor();
         System.out.println("=========================================================================");
-        System.out.println("                             ERROR: " + message);
+        System.out.println("ERROR: " + message);
         System.out.println("=========================================================================");
         blueColor();
         delay(1500);
@@ -54,21 +66,26 @@ public class ConsoleUtil {
 
     public static void showSuccessMessage(String message) {
         greenColor();
-        System.out.println("=========================================================================");
-        System.out.println("                             " + message);
-        System.out.println("=========================================================================");
-        blueColor();
+        String border = "=".repeat(LINE_WIDTH);
+        System.out.println(border);
+        System.out.println("=" + centerText(message, LINE_WIDTH - 2) + "=");
+        System.out.println(border);
+        resetColor();
         delay(1000);
     }
 
-    public static void showInfoMessage(String title, String message) {
+    public static void showInfoMessage(String title, String messageContent) {
         blueColor();
-        System.out.println("=========================================================================");
-        System.out.println("============================= " + title.toUpperCase() + " =============================");
-        System.out.println("=========================================================================");
-        if (message != null && !message.isEmpty()) {
-            System.out.println(message);
-            System.out.println("-------------------------------------------------------------------------");
+        String border = "=".repeat(LINE_WIDTH);
+        String titleLine = "=" + centerText(title.toUpperCase(), LINE_WIDTH - 2) + "=";
+
+        System.out.println(border);
+        System.out.println(titleLine);
+        System.out.println(border);
+
+        if (messageContent != null && !messageContent.isEmpty()) {
+            System.out.println("  " + messageContent);
+            System.out.println("-".repeat(LINE_WIDTH));
         }
         resetColor();
     }
