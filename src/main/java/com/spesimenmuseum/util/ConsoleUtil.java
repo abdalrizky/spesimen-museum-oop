@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class ConsoleUtil {
     private static final Scanner scanner = new Scanner(System.in);
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
@@ -25,6 +26,11 @@ public class ConsoleUtil {
     public static String localDateTimeToString(LocalDateTime dateTime) {
         if (dateTime == null) return "-";
         return dateTime.format(dateTimeFormatter);
+    }
+
+    public static String localDateToString(LocalDateTime dateTime) {
+        if (dateTime == null) return "-";
+        return dateTime.format(dateFormatter);
     }
 
     public static LocalDateTime getCurrentLocalDateTime() {
