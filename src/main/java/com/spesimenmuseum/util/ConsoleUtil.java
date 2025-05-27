@@ -54,12 +54,16 @@ public class ConsoleUtil {
         delay(1000);
     }
 
-    public static void showInfoMessage(String message) {
+    public static void showInfoMessage(String title, String message) {
         blueColor();
         System.out.println("=========================================================================");
-        System.out.println("                             " + message);
+        System.out.println("============================= " + title.toUpperCase() + " =============================");
         System.out.println("=========================================================================");
-        delay(1000);
+        if (message != null && !message.isEmpty()) {
+            System.out.println(message);
+            System.out.println("-------------------------------------------------------------------------");
+        }
+        resetColor();
     }
 
     public static void blueColor() {
