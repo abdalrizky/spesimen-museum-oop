@@ -8,6 +8,6 @@ public class PasswordUtil {
     }
 
     public static boolean checkPassword(String plainTextPassword, String hashedPassword) {
-        return BCrypt.verifyer().verify(hashedPassword.toCharArray(), plainTextPassword.toCharArray()).verified;
+        return BCrypt.verifyer().verify(plainTextPassword.toCharArray(), hashedPassword.toCharArray()).verified;
     }
 }
