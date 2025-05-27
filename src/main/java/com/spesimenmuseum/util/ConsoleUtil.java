@@ -2,6 +2,7 @@ package com.spesimenmuseum.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class ConsoleUtil {
@@ -85,6 +86,18 @@ public class ConsoleUtil {
                 return value;
             } catch (NumberFormatException e) {
                 showErrorMessage("Input tidak valid. Harap masukkan angka.");
+            }
+        }
+    }
+
+    public static LocalDateTime getInputDateTime(String prompt) {
+        while (true) {
+            System.out.print(prompt + " (format dd/MM/yyyy HH:mm:ss): ");
+            String input = scanner.nextLine();
+            try {
+                return LocalDateTime.parse(input, dateTimeFormatter);
+            } catch (DateTimeParseException e) {
+                showErrorMessage("Format tanggal dan waktu tidak valid. Gunakan format dd/MM/yyyy HH:mm:ss.");
             }
         }
     }
