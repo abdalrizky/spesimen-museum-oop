@@ -72,6 +72,11 @@ public class ConsoleUtil {
         resetColor();
     }
 
+    public static String getInputString(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine();
+    }
+
     public static void blueColor() {
         System.out.print("\033[0;34m");
     }
