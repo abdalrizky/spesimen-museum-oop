@@ -207,7 +207,7 @@ public class Main {
     private static void displayEmployeeData(Employee employee) {
         ConsoleUtil.clearScreen();
         ConsoleUtil.showInfoMessage("DATA DIRI PEGAWAI", null);
-        employee.displaySelfDataHeader(); // Dari User class
+        employee.displaySelfDataHeader();
         System.out.println("Nama Lengkap      : " + employee.getFullName());
         System.out.println("Jabatan           : " + employee.getPosition());
         System.out.println("Tanggal Bergabung : " + ConsoleUtil.localDateTimeToString(employee.getJoinedAt()));

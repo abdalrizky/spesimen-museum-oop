@@ -71,9 +71,9 @@ public abstract class User {
     public abstract void setFullName(String fullName);
 
     public void displaySelfDataHeader() {
-        System.out.println("Username       : " + getUsername());
-        System.out.println("Email          : " + getEmail());
-        System.out.println("Nomor Telepon  : " + getPhoneNumber());
-        System.out.println("Role           : " + (getRole() != null ? getRole().getName() : "N/A"));
+        System.out.println("Username          : " + getUsername());
+        System.out.println("Email             : " + getEmail());
+        System.out.println("Nomor Telepon     : " + getPhoneNumber());
+        System.out.println("Role              : " + (getRole() != null ? getRole().getName() : "N/A"));
     }
 }
