@@ -77,6 +77,18 @@ public class ConsoleUtil {
         return scanner.nextLine();
     }
 
+    public static int getInputInt(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                int value = Integer.parseInt(scanner.nextLine());
+                return value;
+            } catch (NumberFormatException e) {
+                showErrorMessage("Input tidak valid. Harap masukkan angka.");
+            }
+        }
+    }
+
     public static void blueColor() {
         System.out.print("\033[0;34m");
     }
