@@ -1,4 +1,4 @@
-package com.spesimenmuseum;
+package com.spesimenmuseum.app;
 
 import com.spesimenmuseum.dao.impl.*;
 import com.spesimenmuseum.model.*;
